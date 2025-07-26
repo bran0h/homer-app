@@ -6,5 +6,28 @@
         "shoppingList": "Shopping List",
         "mealPlan": "Meal Plan",
         "calendar": "Calendar"
+    },
+    "dashboard": {
+        "weather": {
+            "title": "Weather",
+            "loading": "Loading weather...",
+            "error": "Error loading weather",
+            "location": "Your location",
+            "temperature": "Temperature",
+            "humidity": "Humidity",
+            "windSpeed": "Wind Speed",
+            "pressure": "Pressure",
+            "rain": "Rain",
+            "notSupported": "Geolocation is not supported by your browser.",
+            "permissionDenied": "Permission to access location was denied.",
+            "positionUnavailable": "Location is unavailable.",
+            "timeout": "Timeout while trying to get location.",
+            "unknownError": "Unknown error while getting location."
+        },
+        "calendar": {
+            "title": "Calendar",
+            "noEvents": "No events for this day",
+            "nameday": "Today nameday"
+        }
     }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-x-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <ClientOnly>
       <DashboardWeatherCard class="flex-1" />
       <template #fallback>
