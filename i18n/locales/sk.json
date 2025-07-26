@@ -1,0 +1,33 @@
+{
+    "navigation": {
+        "kitchen": "Kuchyňa",
+        "fridge": "Chladnička",
+        "recipes": "Recepty",
+        "shoppingList": "Nákupný zoznam",
+        "mealPlan": "Plán jedál",
+        "calendar": "Kalendár"
+    },
+    "dashboard": {
+        "weather": {
+            "title": "Počasie",
+            "loading": "Načítavanie počasia...",
+            "error": "Chyba pri načítavaní počasia",
+            "location": "Vaša poloha",
+            "temperature": "Teplota",
+            "humidity": "Vlhkosť",
+            "windSpeed": "Rýchlosť vetra",
+            "pressure": "Tlak",
+            "rain": "Dážď",
+            "notSupported": "Geolokácia nie je podporovaná vo vašom prehliadači.",
+            "permissionDenied": "Povolenie na prístup k polohe bolo zamietnuté.",
+            "positionUnavailable": "Poloha nie je dostupná.",
+            "timeout": "Časový limit pre získanie polohy bol prekročený.",
+            "unknownError": "Neznáma chyba pri získavaní polohy."
+        },
+        "calendar": {
+            "title": "Kalendár",
+            "noEvents": "Žiadne udalosti na tento deň",
+            "nameday": "Meniny má"
+        }
+    }
+}

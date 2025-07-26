@@ -1,0 +1,10 @@
+{
+    "navigation": {
+        "kitchen": "Kitchen",
+        "fridge": "Fridge",
+        "recipes": "Recipes",
+        "shoppingList": "Shopping List",
+        "mealPlan": "Meal Plan",
+        "calendar": "Calendar"
+    }
+}
