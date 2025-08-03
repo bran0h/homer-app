@@ -1,14 +1,81 @@
+<template>
+  <div class="p-4 flex flex-col gap-4">
+    <div class="flex items-center justify-between">
+      <div
+        class="flex items-center space-x-2 cursor-pointer"
+        @click="navigateTo('/')"
+      >
+        <img src="/images/logo.png" width="32" height="32" alt="Homer Logo" />
+        <h1 class="text-lg font-bold">Homer</h1>
+      </div>
+      <div class="hidden md:block">
+        <UNavigationMenu
+          content-orientation="vertical"
+          :items="items"
+          class="justify-center"
+        />
+      </div>
+      <!-- Side menu -->
+      <div class="md:hidden">
+        <Icon
+          name="i-lucide-menu"
+          class="text-2xl cursor-pointer"
+          @click="sideMenuDisplayed = !sideMenuDisplayed"
+        />
+        <Transition
+          name="fade"
+          enter-active-class="transition-opacity duration-300"
+          enter-from-class="opacity-0"
+          enter-to-class="opacity-100"
+          leave-active-class="transition-opacity duration-300"
+          leave-from-class="opacity-100"
+          leave-to-class="opacity-0"
+        >
+          <!-- Bg -->
+          <div
+            v-if="sideMenuDisplayed"
+            class="fixed inset-0 z-50 bg-black/50"
+            @click="sideMenuDisplayed = false"
+          >
+            <!-- Side bar -->
+            <div
+              class="fixed top-0 right-0 z-50 w-64 h-full bg-accented shadow-lg p-4"
+              @click.stop
+            >
+              <UNavigationMenu
+                :ui="{
+                  linkLabel: 'text-white',
+                  linkLeadingIcon: 'text-white',
+                  arrow: 'text-white',
+                  childList: 'text-white',
+                  content: 'bg-accented',
+                }"
+                orientation="vertical"
+                :items="items"
+                @close="sideMenuDisplayed = false"
+              />
+            </div>
+          </div>
+        </Transition>
+      </div>
+    </div>
+    <slot />
+  </div>
+</template>
 <script setup lang="ts">
 import type { NavigationMenuItem } from "@nuxt/ui";
 
 const route = useRoute();
 const { t, locale, setLocale } = useI18n();
 
+const sideMenuDisplayed = ref(false);
+
 const items = computed<NavigationMenuItem[]>(() => [
   {
     label: t("navigation.kitchen"),
     icon: "i-lucide-chef-hat",
     active: route.path.startsWith("/kitchen"),
+    type: "trigger",
     children: [
       {
         label: t("navigation.fridge"),
@@ -44,6 +111,7 @@ const items = computed<NavigationMenuItem[]>(() => [
   },
   {
     label: t("navigation.options"),
+    type: "trigger",
     icon: "i-lucide-settings",
     children: [
       {
@@ -73,23 +141,3 @@ const items = computed<NavigationMenuItem[]>(() => [
   },
 ]);
 </script>
-
-<template>
-  <div class="p-4 flex flex-col gap-4">
-    <div class="flex items-center justify-between">
-      <div
-        class="flex items-center space-x-2 cursor-pointer"
-        @click="navigateTo('/')"
-      >
-        <img src="/images/logo.png" width="32" height="32" alt="Homer Logo" />
-        <h1 class="text-lg font-bold">Homer</h1>
-      </div>
-      <UNavigationMenu
-        content-orientation="vertical"
-        :items="items"
-        class="justify-center"
-      />
-    </div>
-    <slot />
-  </div>
-</template>
