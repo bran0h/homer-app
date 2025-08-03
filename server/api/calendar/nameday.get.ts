@@ -18,7 +18,6 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Namedays data not found",
     });
   }
-  console.log("Data loaded from namedays.csv", data);
   const parsed = tabula.parseTable(data, {
     schema: [StringSchema, StringSchema] as const,
   });
