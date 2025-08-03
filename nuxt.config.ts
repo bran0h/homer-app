@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "@nuxtjs/i18n",
     "@vueuse/nuxt",
+    "@nuxtjs/supabase",
   ],
   vite: {
     build: {
@@ -71,5 +72,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     weatherKey: process.env.NUXT_WEATHER_KEY,
+  },
+  supabase: {
+    redirect: true,
+    types: "./shares/types/supabase.d.ts",
   },
 });

@@ -5,7 +5,18 @@
         "recipes": "Recepty",
         "shoppingList": "Nákupný zoznam",
         "mealPlan": "Plán jedál",
-        "calendar": "Kalendár"
+        "calendar": "Kalendár",
+        "options": "Možnosti",
+        "profile": "Profil",
+        "changeToSk": "Zmeniť na slovenčinu",
+        "changeToEn": "Zmeniť na angličtinu",
+        "logout": "Odhlásiť sa"
+    },
+    "index": {
+        "title": "Vitajte v Homer",
+        "description": "Aplikácia pre správu vášho domova",
+        "loginPrompt": "Prihláste sa pre pokračovanie",
+        "login": "Prihlásiť sa"
     },
     "dashboard": {
         "weather": {
@@ -29,5 +40,10 @@
             "noEvents": "Žiadne udalosti na tento deň",
             "nameday": "Meniny má"
         }
+    },
+    "profile": {
+        "title": "Môj profil",
+        "name": "Meno",
+        "email": "Email"
     }
 }

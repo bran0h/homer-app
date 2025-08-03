@@ -5,7 +5,18 @@
         "recipes": "Recipes",
         "shoppingList": "Shopping List",
         "mealPlan": "Meal Plan",
-        "calendar": "Calendar"
+        "calendar": "Calendar",
+        "options": "Options",
+        "profile": "Profile",
+        "changeToSk": "Change to Slovak",
+        "changeToEn": "Change to English",
+        "logout": "Logout"
+    },
+    "index": {
+        "title": "Welcome to Homer",
+        "description": "An application for managing your home",
+        "loginPrompt": "Please log in to continue",
+        "login": "Log In"
     },
     "dashboard": {
         "weather": {
@@ -29,5 +40,10 @@
             "noEvents": "No events for this day",
             "nameday": "Today nameday"
         }
+    },
+    "profile": {
+        "title": "My Profile",
+        "name": "Name",
+        "email": "Email"
     }
 }
