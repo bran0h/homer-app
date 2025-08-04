@@ -62,6 +62,7 @@
             "removeSuccess": "All user roles were successfully removed",
             "addHost": "Add as Host",
             "addMember": "Add as Member",
+            "addAdmin": "Add as Administrator",
             "remove": "Remove all roles",
             "noUsers": "No users",
             "loading": "Loading users...",

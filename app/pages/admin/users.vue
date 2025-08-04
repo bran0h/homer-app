@@ -84,12 +84,25 @@ const removeAllUserRoles = async (user: UserWithRoles) => {
 };
 
 const renderUserActions = (user: UserWithRoles) => {
-  const actions: VNode[] = [];
+  if (user.id === useSupabaseUser().value?.id) {
+    return [];
+  }
   const isAdmin =
     user.user_roles.findIndex((role) => role.role === "admin") !== -1;
   if (isAdmin) {
-    return actions;
+    return h(
+      UButton,
+      {
+        class: "cursor-pointer",
+        color: "secondary",
+        size: "sm",
+        onClick: async () => removeAllUserRoles(user),
+      },
+      t("admin.users.remove")
+    );
   }
+  const actions: VNode[] = [];
+
   const isMember =
     user.user_roles.findIndex((role) => role.role === "member") !== -1;
   const isHost =
@@ -131,6 +144,19 @@ const renderUserActions = (user: UserWithRoles) => {
           onClick: async () => removeAllUserRoles(user),
         },
         t("admin.users.remove")
+      )
+    );
+
+    actions.push(
+      h(
+        UButton,
+        {
+          class: "cursor-pointer",
+          color: "warning",
+          size: "sm",
+          onClick: async () => addUserRole(user, "admin"),
+        },
+        t("admin.users.addAdmin")
       )
     );
   }
@@ -182,7 +208,11 @@ const columns = computed<TableColumn<UserWithRoles>[]>(() => [
     accessorKey: "user_roles",
     header: t("admin.users.roles"),
     cell: ({ row }) =>
-      row.original.user_roles.map(({ role }) => handleRoleChip(role)),
+      h(
+        "div",
+        { class: "flex flex-wrap gap-2" },
+        row.original.user_roles.map(({ role }) => handleRoleChip(role))
+      ),
   },
   {
     accessorKey: "created_at",

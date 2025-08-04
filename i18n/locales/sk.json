@@ -62,6 +62,7 @@
             "removeSuccess": "Všetky roly používateľa boli úspešne odstránené",
             "addHost": "Pridať ako hosťa",
             "addMember": "Pridať ako člena",
+            "addAdmin": "Pridať ako administrátora",
             "remove": "Odstrániť všetky roly",
             "noUsers": "Žiadni používatelia",
             "loading": "Načítavanie používateľov...",
