@@ -14,6 +14,10 @@
         "changeToEn": "Zmeniť na angličtinu",
         "logout": "Odhlásiť sa"
     },
+    "auth": {
+        "unauthorizedError": "Nemáte oprávnenie",
+        "unauthorizedErrorDescription": "Prosím, prihláste sa ako administrátor alebo kontaktujte správcu systému."
+    },
     "index": {
         "title": "Vitajte v Homer",
         "description": "Aplikácia pre správu vášho domova",
@@ -47,8 +51,7 @@
         "title": "Môj profil",
         "name": "Meno",
         "email": "Email",
-        "role": "Rola",
-        "unauthorizedError": "Nemáte oprávnenie na zobrazenie tejto stránky."
+        "role": "Rola"
     },
     "admin": {
         "users": {

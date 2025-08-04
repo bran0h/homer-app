@@ -25,9 +25,7 @@ export const useUser = () => {
     }
   );
 
-  const isAdmin = computed(() => {
-    return roles.value?.includes("admin");
-  });
+  const isAdmin = computed(() => roles.value?.includes("admin"));
 
   return {
     roles,

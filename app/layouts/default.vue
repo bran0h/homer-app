@@ -111,7 +111,7 @@ const items = computed<NavigationMenuItem[]>(() => {
       to: "/calendar",
       active: route.path.startsWith("/calendar"),
     },
-    isAdmin
+    isAdmin.value
       ? {
           label: t("navigation.admin"),
           icon: "i-lucide-shield-check",
