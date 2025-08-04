@@ -68,7 +68,10 @@
             "error": "Chyba pri načítavaní používateľov",
             "adminRole": "Administrátor",
             "memberRole": "Člen",
-            "hostRole": "Hosť"
+            "hostRole": "Hosť",
+            "roles": "Roly",
+            "createdAt": "Vytvorené",
+            "actions": "Akcie"
         }
     }
 }

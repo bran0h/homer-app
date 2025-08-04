@@ -6,11 +6,17 @@
         "shoppingList": "Shopping List",
         "mealPlan": "Meal Plan",
         "calendar": "Calendar",
+        "admin": "Administration",
+        "users": "Users",
         "options": "Options",
         "profile": "Profile",
         "changeToSk": "Change to Slovak",
         "changeToEn": "Change to English",
         "logout": "Logout"
+    },
+    "auth": {
+        "unauthorizedError": "Unauthorized access",
+        "unauthorizedErrorDescription": "Please log in as an administrator or contact the system administrator."
     },
     "index": {
         "title": "Welcome to Homer",
@@ -44,6 +50,28 @@
     "profile": {
         "title": "My Profile",
         "name": "Name",
-        "email": "Email"
+        "email": "Email",
+        "role": "Role"
+    },
+    "admin": {
+        "users": {
+            "title": "User Management",
+            "addError": "Error adding user with role {role}",
+            "addSuccess": "User with role {role} was successfully added",
+            "removeError": "Error removing all user roles",
+            "removeSuccess": "All user roles were successfully removed",
+            "addHost": "Add as Host",
+            "addMember": "Add as Member",
+            "remove": "Remove all roles",
+            "noUsers": "No users",
+            "loading": "Loading users...",
+            "error": "Error loading users",
+            "adminRole": "Administrator",
+            "memberRole": "Member",
+            "hostRole": "Host",
+            "roles": "Roles",
+            "createdAt": "Created At",
+            "actions": "Actions"
+        }
     }
 }
