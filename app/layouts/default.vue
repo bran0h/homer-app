@@ -69,75 +69,94 @@ const route = useRoute();
 const { t, locale, setLocale } = useI18n();
 
 const sideMenuDisplayed = ref(false);
+const { isAdmin } = useUser();
 
-const items = computed<NavigationMenuItem[]>(() => [
-  {
-    label: t("navigation.kitchen"),
-    icon: "i-lucide-chef-hat",
-    active: route.path.startsWith("/kitchen"),
-    type: "trigger",
-    children: [
-      {
-        label: t("navigation.fridge"),
-        icon: "i-lucide-refrigerator",
-        to: "/kitchen/fridge",
-        active: route.path === "/kitchen/fridge",
-      },
-      {
-        label: t("navigation.recipes"),
-        icon: "i-lucide-book",
-        to: "/kitchen/recipes",
-        active: route.path === "/kitchen/recipes",
-      },
-      {
-        label: t("navigation.shoppingList"),
-        icon: "i-lucide-shopping-cart",
-        to: "/kitchen/shopping-list",
-        active: route.path === "/kitchen/shopping-list",
-      },
-      {
-        label: t("navigation.mealPlan"),
-        icon: "i-lucide-utensils",
-        to: "/kitchen/meal-plan",
-        active: route.path === "/kitchen/meal-plan",
-      },
-    ],
-  },
-  {
-    label: t("navigation.calendar"),
-    icon: "i-lucide-calendar",
-    to: "/calendar",
-    active: route.path.startsWith("/calendar"),
-  },
-  {
-    label: t("navigation.options"),
-    type: "trigger",
-    icon: "i-lucide-settings",
-    children: [
-      {
-        label: t("navigation.profile"),
-        icon: "i-lucide-user",
-        to: "/profile",
-        active: route.path === "/profile",
-      },
-      {
-        label: t(`navigation.changeTo${locale.value === "sk" ? "En" : "Sk"}`),
-        icon: "i-lucide-globe",
-        onClick: () => setLocale(locale.value === "sk" ? "en" : "sk"),
-      },
-      {
-        label: t("navigation.logout"),
-        icon: "i-lucide-log-out",
-        to: "/logout",
-        active: route.path === "/logout",
-      },
-    ],
-  },
-  {
-    label: "GitHub",
-    icon: "i-simple-icons-github",
-    to: "https://github.com/bran0h/homer-ui",
-    target: "_blank",
-  },
-]);
+const items = computed<NavigationMenuItem[]>(() => {
+  const paths: (NavigationMenuItem | undefined)[] = [
+    {
+      label: t("navigation.kitchen"),
+      icon: "i-lucide-chef-hat",
+      active: route.path.startsWith("/kitchen"),
+      type: "trigger",
+      children: [
+        {
+          label: t("navigation.fridge"),
+          icon: "i-lucide-refrigerator",
+          to: "/kitchen/fridge",
+          active: route.path === "/kitchen/fridge",
+        },
+        {
+          label: t("navigation.recipes"),
+          icon: "i-lucide-book",
+          to: "/kitchen/recipes",
+          active: route.path === "/kitchen/recipes",
+        },
+        {
+          label: t("navigation.shoppingList"),
+          icon: "i-lucide-shopping-cart",
+          to: "/kitchen/shopping-list",
+          active: route.path === "/kitchen/shopping-list",
+        },
+        {
+          label: t("navigation.mealPlan"),
+          icon: "i-lucide-utensils",
+          to: "/kitchen/meal-plan",
+          active: route.path === "/kitchen/meal-plan",
+        },
+      ],
+    },
+    {
+      label: t("navigation.calendar"),
+      icon: "i-lucide-calendar",
+      to: "/calendar",
+      active: route.path.startsWith("/calendar"),
+    },
+    isAdmin
+      ? {
+          label: t("navigation.admin"),
+          icon: "i-lucide-shield-check",
+          type: "trigger",
+          children: [
+            {
+              label: t("navigation.users"),
+              icon: "i-lucide-users",
+              to: "/admin/users",
+              active: route.path === "/admin/users",
+            },
+          ],
+        }
+      : undefined,
+    {
+      label: t("navigation.options"),
+      type: "trigger",
+      icon: "i-lucide-settings",
+      children: [
+        {
+          label: t("navigation.profile"),
+          icon: "i-lucide-user",
+          to: "/profile",
+          active: route.path === "/profile",
+        },
+        {
+          label: t(`navigation.changeTo${locale.value === "sk" ? "En" : "Sk"}`),
+          icon: "i-lucide-globe",
+          onClick: () => setLocale(locale.value === "sk" ? "en" : "sk"),
+        },
+        {
+          label: t("navigation.logout"),
+          icon: "i-lucide-log-out",
+          to: "/logout",
+          active: route.path === "/logout",
+        },
+      ],
+    },
+    {
+      label: "GitHub",
+      icon: "i-simple-icons-github",
+      to: "https://github.com/bran0h/homer-ui",
+      target: "_blank",
+    },
+  ];
+  return paths.filter((item): item is NavigationMenuItem => item !== undefined);
+});
 </script>

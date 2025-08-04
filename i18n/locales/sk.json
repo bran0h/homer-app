@@ -6,6 +6,8 @@
         "shoppingList": "Nákupný zoznam",
         "mealPlan": "Plán jedál",
         "calendar": "Kalendár",
+        "admin": "Administrácia",
+        "users": "Používatelia",
         "options": "Možnosti",
         "profile": "Profil",
         "changeToSk": "Zmeniť na slovenčinu",
@@ -47,5 +49,23 @@
         "email": "Email",
         "role": "Rola",
         "unauthorizedError": "Nemáte oprávnenie na zobrazenie tejto stránky."
+    },
+    "admin": {
+        "users": {
+            "title": "Správa používateľov",
+            "addError": "Chyba pri pridávaní používateľa s rolou {role}",
+            "addSuccess": "Používateľ s rolou {role} bol úspešne pridaný",
+            "removeError": "Chyba pri odstraňovaní všetkých rolí používateľa",
+            "removeSuccess": "Všetky roly používateľa boli úspešne odstránené",
+            "addHost": "Pridať ako hosťa",
+            "addMember": "Pridať ako člena",
+            "remove": "Odstrániť všetky roly",
+            "noUsers": "Žiadni používatelia",
+            "loading": "Načítavanie používateľov...",
+            "error": "Chyba pri načítavaní používateľov",
+            "adminRole": "Administrátor",
+            "memberRole": "Člen",
+            "hostRole": "Hosť"
+        }
     }
 }

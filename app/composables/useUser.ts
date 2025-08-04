@@ -25,10 +25,15 @@ export const useUser = () => {
     }
   );
 
+  const isAdmin = computed(() => {
+    return roles.value?.includes("admin");
+  });
+
   return {
     roles,
     rolesError,
     user,
+    isAdmin,
     rolesStatus,
   };
 };
