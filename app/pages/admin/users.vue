@@ -14,10 +14,11 @@
 <script lang="ts" setup>
 import { UButton } from "#components";
 import type { TableColumn } from "@nuxt/ui";
+import { DateTime } from "luxon";
 import type { VNode } from "vue";
 
 const client = useSupabaseClient<Database>();
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const toast = useToast();
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
@@ -179,17 +180,23 @@ const columns = computed<TableColumn<UserWithRoles>[]>(() => [
   },
   {
     accessorKey: "user_roles",
-    header: "Roles",
+    header: t("admin.users.roles"),
     cell: ({ row }) =>
       row.original.user_roles.map(({ role }) => handleRoleChip(role)),
   },
   {
     accessorKey: "created_at",
-    header: "Created At",
-    cell: ({ row }) => new Date(row.original.created_at).toLocaleDateString(),
+    header: t("admin.users.createdAt"),
+    cell: ({ row }) =>
+      DateTime.fromISO(row.original.created_at).toLocaleString(
+        DateTime.DATETIME_MED,
+        {
+          locale: locale.value,
+        }
+      ),
   },
   {
-    header: "Actions",
+    header: t("admin.users.actions"),
     cell: ({ row }) => renderUserActions(row.original),
   },
 ]);
