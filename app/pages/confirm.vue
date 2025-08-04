@@ -20,7 +20,7 @@ watch([roles, rolesError, user] as const, async ([roles, error, user]) => {
   if (error) {
     console.error("Error fetching user roles:", error);
     toast.add({
-      title: t("profile.unauthorizedError"),
+      title: t("auth.unauthorizedError"),
       color: "error",
       duration: 5000,
     });
@@ -30,7 +30,7 @@ watch([roles, rolesError, user] as const, async ([roles, error, user]) => {
   if (!roles || roles.length === 0) {
     console.error("User has no roles assigned.");
     toast.add({
-      title: t("profile.unauthorizedError"),
+      title: t("auth.unauthorizedError"),
       color: "error",
       duration: 5000,
     });
