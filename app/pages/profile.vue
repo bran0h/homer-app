@@ -12,10 +12,28 @@
         class="border rounded p-2"
         readonly
       />
+      <!-- User role -->
+      <label for="role" class="text-sm font-medium">
+        {{ $t("profile.role") }}
+      </label>
+      <!-- Display chips with roles in container -->
+      <div class="flex flex-wrap gap-2">
+        <span
+          v-for="role in roles"
+          :key="role"
+          class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded"
+        >
+          {{ role }}
+        </span>
+      </div>
+      <!-- Display error message -->
+      <div v-if="rolesError" class="text-red-500 text-sm">
+        {{ $t("profile.error") }}
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-const user = useSupabaseUser();
+const { rolesError, roles, user } = useUser();
 </script>

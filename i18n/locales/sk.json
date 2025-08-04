@@ -44,6 +44,8 @@
     "profile": {
         "title": "Môj profil",
         "name": "Meno",
-        "email": "Email"
+        "email": "Email",
+        "role": "Rola",
+        "unauthorizedError": "Nemáte oprávnenie na zobrazenie tejto stránky."
     }
 }

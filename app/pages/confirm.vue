@@ -5,19 +5,38 @@
 </template>
 
 <script setup lang="ts">
-const user = useSupabaseUser();
 definePageMeta({
   layout: "unauthorized",
 });
 
-watch(
-  user,
-  () => {
-    if (user.value) {
-      // Redirect to protected page
-      return navigateTo("/");
-    }
-  },
-  { immediate: true }
-);
+const { rolesError, roles, user, rolesStatus } = useUser();
+const { t } = useI18n();
+const toast = useToast();
+
+watch([roles, rolesError, user] as const, async ([roles, error, user]) => {
+  if (!user || rolesStatus.value === "pending") {
+    return;
+  }
+  if (error) {
+    console.error("Error fetching user roles:", error);
+    toast.add({
+      title: t("profile.unauthorizedError"),
+      color: "error",
+      duration: 5000,
+    });
+    navigateTo("/logout");
+    return;
+  }
+  if (!roles || roles.length === 0) {
+    console.error("User has no roles assigned.");
+    toast.add({
+      title: t("profile.unauthorizedError"),
+      color: "error",
+      duration: 5000,
+    });
+    navigateTo("/logout");
+    return;
+  }
+  navigateTo("/");
+});
 </script>
