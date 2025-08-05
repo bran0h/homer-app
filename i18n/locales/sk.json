@@ -111,6 +111,38 @@
                 "actions": "Akcie",
                 "noItems": "Žiadne položky",
                 "noItemsDescription": "Začnite pridaním položiek do inventára."
+            },
+            "modal": {
+                "addItem": "Pridať novú položku",
+                "cancel": "Zrušiť",
+                "save": "Uložiť položku"
+            },
+            "form": {
+                "name": "Názov",
+                "namePlaceholder": "Zadajte názov položky",
+                "description": "Popis",
+                "descriptionPlaceholder": "Zadajte popis položky",
+                "quantity": "Množstvo",
+                "unit": "Jednotka",
+                "unitPlaceholder": "kg, kusy, litre...",
+                "minQuantity": "Minimálne množstvo",
+                "minQuantityPlaceholder": "Hranica pre nízky stav zásob",
+                "status": "Stav",
+                "purchaseDate": "Dátum nákupu",
+                "expirationDate": "Dátum expirácie",
+                "categories": "Kategórie",
+                "categoriesPlaceholder": "Vyberte kategórie",
+                "tags": "Štítky",
+                "tagsPlaceholder": "Vyberte štítky",
+                "notes": "Poznámky",
+                "notesPlaceholder": "Dodatočné poznámky"
+            },
+            "errors": {
+                "nameRequired": "Názov položky je povinný",
+                "createFailed": "Nepodarilo sa vytvoriť položku"
+            },
+            "success": {
+                "itemAdded": "Položka bola úspešne pridaná"
             }
         }
     },

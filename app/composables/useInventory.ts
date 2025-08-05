@@ -193,7 +193,7 @@ export const useInventory = () => {
         }
         if (filters.category && filters.category !== "all") {
           const hasCategory = item.inventory_item_categories?.some(
-            (ic) => ic.inventory_categories.name === filters.category
+            (ic) => ic.inventory_categories.id === filters.category
           );
           if (!hasCategory) return false;
         }

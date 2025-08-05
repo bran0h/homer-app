@@ -111,6 +111,38 @@
                 "actions": "Actions",
                 "noItems": "No items found",
                 "noItemsDescription": "Start by adding some items to your inventory."
+            },
+            "modal": {
+                "addItem": "Add New Item",
+                "cancel": "Cancel",
+                "save": "Save Item"
+            },
+            "form": {
+                "name": "Name",
+                "namePlaceholder": "Enter item name",
+                "description": "Description",
+                "descriptionPlaceholder": "Enter item description",
+                "quantity": "Quantity",
+                "unit": "Unit",
+                "unitPlaceholder": "kg, pieces, liters...",
+                "minQuantity": "Minimum Quantity",
+                "minQuantityPlaceholder": "Low stock threshold",
+                "status": "Status",
+                "purchaseDate": "Purchase Date",
+                "expirationDate": "Expiration Date",
+                "categories": "Categories",
+                "categoriesPlaceholder": "Select categories",
+                "tags": "Tags",
+                "tagsPlaceholder": "Select tags",
+                "notes": "Notes",
+                "notesPlaceholder": "Additional notes"
+            },
+            "errors": {
+                "nameRequired": "Item name is required",
+                "createFailed": "Failed to create item"
+            },
+            "success": {
+                "itemAdded": "Item added successfully"
             }
         }
     }
