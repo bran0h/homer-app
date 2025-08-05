@@ -1,4 +1,4 @@
-import { useUserService } from "~/composables/services/useUserService";
+import { useUserService } from "~/services/useUserService";
 
 export default defineNuxtRouteMiddleware(async (to) => {
   const userService = useUserService();

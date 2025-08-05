@@ -5,7 +5,8 @@ export default withNuxt(
   // Your custom configs here
   {
     rules:{
-      "vue/html-self-closing": "off"
+      "vue/html-self-closing": "off",
+      "no-console": "warn",
     }
   }
 )

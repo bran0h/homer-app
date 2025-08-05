@@ -74,5 +74,49 @@
             "createdAt": "Vytvorené",
             "actions": "Akcie"
         }
+    },
+    "kitchen": {
+        "fridge": {
+            "title": "Stav chladničky",
+            "description": "Zobrazenie a správa inventára chladničky",
+            "addItem": "Pridať položku",
+            "stats": {
+                "totalItems": "Celkový počet položiek",
+                "lowStock": "Málo na sklade",
+                "expired": "Expirované"
+            },
+            "search": {
+                "placeholder": "Hľadať položky..."
+            },
+            "filters": {
+                "allStatus": "Všetky stavy",
+                "allCategories": "Všetky kategórie"
+            },
+            "status": {
+                "all": "Všetky stavy",
+                "inStock": "Na sklade",
+                "lowStock": "Málo na sklade",
+                "outOfStock": "Vypredané",
+                "expired": "Expirované"
+            },
+            "categories": {
+                "all": "Všetky kategórie"
+            },
+            "table": {
+                "name": "Názov",
+                "quantity": "Množstvo",
+                "unit": "Jednotka",
+                "status": "Stav",
+                "expires": "Končí",
+                "actions": "Akcie",
+                "noItems": "Žiadne položky",
+                "noItemsDescription": "Začnite pridaním položiek do inventára."
+            }
+        }
+    },
+    "fridge": {
+        "title": "Stav chladničky",
+        "description": "Zobrazenie aktuálneho stavu vašej chladničky",
+        "content": "Tu môžete vidieť obsah vašej chladničky a spravovať ho."
     }
 }

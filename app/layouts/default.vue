@@ -119,6 +119,7 @@ const items = computed<NavigationMenuItem[]>(() => {
           label: t("navigation.admin"),
           icon: "i-lucide-shield-check",
           type: "trigger",
+          active: route.path.startsWith("/admin"),
           children: [
             {
               label: t("navigation.users"),

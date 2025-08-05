@@ -74,5 +74,44 @@
             "createdAt": "Created At",
             "actions": "Actions"
         }
+    },
+    "kitchen": {
+        "fridge": {
+            "title": "Fridge Status",
+            "description": "View and manage your fridge inventory",
+            "addItem": "Add Item",
+            "stats": {
+                "totalItems": "Total Items",
+                "lowStock": "Low Stock",
+                "expired": "Expired"
+            },
+            "search": {
+                "placeholder": "Search items..."
+            },
+            "filters": {
+                "allStatus": "All Status",
+                "allCategories": "All Categories"
+            },
+            "status": {
+                "all": "All Status",
+                "inStock": "In Stock",
+                "lowStock": "Low Stock",
+                "outOfStock": "Out of Stock",
+                "expired": "Expired"
+            },
+            "categories": {
+                "all": "All Categories"
+            },
+            "table": {
+                "name": "Name",
+                "quantity": "Quantity",
+                "unit": "Unit",
+                "status": "Status",
+                "expires": "Expires",
+                "actions": "Actions",
+                "noItems": "No items found",
+                "noItemsDescription": "Start by adding some items to your inventory."
+            }
+        }
     }
 }

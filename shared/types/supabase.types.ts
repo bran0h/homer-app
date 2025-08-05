@@ -14,6 +14,224 @@ export type Database = {
   }
   public: {
     Tables: {
+      inventory_categories: {
+        Row: {
+          color: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      inventory_item_categories: {
+        Row: {
+          category_id: string | null
+          created_at: string
+          id: string
+          item_id: string | null
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string
+          id?: string
+          item_id?: string | null
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string
+          id?: string
+          item_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_item_categories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_item_categories_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inventory_item_history: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          item_id: string | null
+          new_values: Json | null
+          old_values: Json | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          item_id?: string | null
+          new_values?: Json | null
+          old_values?: Json | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          item_id?: string | null
+          new_values?: Json | null
+          old_values?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_item_history_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inventory_item_tags: {
+        Row: {
+          created_at: string
+          id: string
+          item_id: string | null
+          tag_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          item_id?: string | null
+          tag_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          item_id?: string | null
+          tag_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_item_tags_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_item_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inventory_items: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          expiration_date: string | null
+          id: string
+          image_url: string | null
+          min_quantity: number | null
+          name: string
+          notes: string | null
+          purchase_date: string | null
+          quantity: number | null
+          status: Database["public"]["Enums"]["item_status"]
+          unit: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          expiration_date?: string | null
+          id?: string
+          image_url?: string | null
+          min_quantity?: number | null
+          name: string
+          notes?: string | null
+          purchase_date?: string | null
+          quantity?: number | null
+          status?: Database["public"]["Enums"]["item_status"]
+          unit?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          expiration_date?: string | null
+          id?: string
+          image_url?: string | null
+          min_quantity?: number | null
+          name?: string
+          notes?: string | null
+          purchase_date?: string | null
+          quantity?: number | null
+          status?: Database["public"]["Enums"]["item_status"]
+          unit?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      inventory_tags: {
+        Row: {
+          color: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -69,9 +287,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_user_role: {
+        Args: { role_name: Database["public"]["Enums"]["role"] }
+        Returns: boolean
+      }
+      is_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
     }
     Enums: {
+      item_status: "in_stock" | "low_stock" | "out_of_stock" | "expired"
       role: "admin" | "member" | "host"
     }
     CompositeTypes: {
@@ -200,6 +426,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      item_status: ["in_stock", "low_stock", "out_of_stock", "expired"],
       role: ["admin", "member", "host"],
     },
   },

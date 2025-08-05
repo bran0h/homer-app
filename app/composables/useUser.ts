@@ -1,4 +1,4 @@
-import { useUserService } from "./services/useUserService";
+import { useUserService } from "../services/useUserService";
 
 export const useUser = () => {
   const user = useSupabaseUser();
