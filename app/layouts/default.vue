@@ -1,6 +1,6 @@
 <template>
   <div class="p-4 flex flex-col gap-4">
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between z-10">
       <div
         class="flex items-center space-x-2 cursor-pointer"
         @click="navigateTo('/')"
@@ -14,7 +14,7 @@
           :items="items"
           class="justify-center"
           :ui="{
-            viewport: 'bg-black',
+            content: 'bg-black',
           }"
         />
       </div>
