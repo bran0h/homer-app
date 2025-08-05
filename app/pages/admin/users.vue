@@ -98,7 +98,7 @@ const renderUserActions = (user: UserWithRoles) => {
         size: "sm",
         onClick: async () => removeAllUserRoles(user),
       },
-      t("admin.users.remove")
+      () => t("admin.users.remove")
     );
   }
   const actions: VNode[] = [];
@@ -117,7 +117,7 @@ const renderUserActions = (user: UserWithRoles) => {
           size: "sm",
           onClick: async () => addUserRole(user, "member"),
         },
-        t("admin.users.addMember")
+        () => t("admin.users.addMember")
       )
     );
     actions.push(
@@ -129,7 +129,7 @@ const renderUserActions = (user: UserWithRoles) => {
           size: "sm",
           onClick: async () => addUserRole(user, "host"),
         },
-        t("admin.users.addHost")
+        () => t("admin.users.addHost")
       )
     );
   }
@@ -143,7 +143,7 @@ const renderUserActions = (user: UserWithRoles) => {
           size: "sm",
           onClick: async () => removeAllUserRoles(user),
         },
-        t("admin.users.remove")
+        () => t("admin.users.remove")
       )
     );
 
@@ -156,7 +156,7 @@ const renderUserActions = (user: UserWithRoles) => {
           size: "sm",
           onClick: async () => addUserRole(user, "admin"),
         },
-        t("admin.users.addAdmin")
+        () => t("admin.users.addAdmin")
       )
     );
   }
@@ -198,7 +198,7 @@ const columns = computed<TableColumn<UserWithRoles>[]>(() => [
   {
     accessorKey: "id",
     header: "ID",
-    cell: ({ row }) => shortUid(row.original.id),
+    cell: ({ row }) => h("p", shortUid(row.original.id)),
   },
   {
     accessorKey: "email",
@@ -210,7 +210,7 @@ const columns = computed<TableColumn<UserWithRoles>[]>(() => [
     cell: ({ row }) =>
       h(
         "div",
-        { class: "flex flex-wrap gap-2" },
+        { class: "flex  gap-2" },
         row.original.user_roles.map(({ role }) => handleRoleChip(role))
       ),
   },
@@ -218,11 +218,15 @@ const columns = computed<TableColumn<UserWithRoles>[]>(() => [
     accessorKey: "created_at",
     header: t("admin.users.createdAt"),
     cell: ({ row }) =>
-      DateTime.fromISO(row.original.created_at).toLocaleString(
-        DateTime.DATETIME_MED,
-        {
-          locale: locale.value,
-        }
+      h(
+        "p",
+        { class: "text-sm" },
+        DateTime.fromISO(row.original.created_at).toLocaleString(
+          DateTime.DATETIME_MED,
+          {
+            locale: locale.value,
+          }
+        )
       ),
   },
   {

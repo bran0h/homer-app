@@ -13,6 +13,9 @@
           content-orientation="vertical"
           :items="items"
           class="justify-center"
+          :ui="{
+            viewport: 'bg-black',
+          }"
         />
       </div>
       <!-- Side menu -->

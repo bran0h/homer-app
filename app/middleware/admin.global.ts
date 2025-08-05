@@ -1,6 +1,9 @@
-export default defineNuxtRouteMiddleware((to) => {
-  const { isAdmin } = useUser();
-  if (to.path.startsWith("/admin") && !isAdmin.value) {
+import { useUserService } from "~/composables/services/useUserService";
+
+export default defineNuxtRouteMiddleware(async (to) => {
+  const userService = useUserService();
+  const roles = await userService.getUserRoles();
+  if (to.path.startsWith("/admin") && !roles.includes("admin")) {
     return navigateTo(`/?error=unauthorized`, {
       replace: true,
     });
