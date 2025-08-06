@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@vueuse/nuxt",
     "@nuxtjs/supabase",
+    "@nuxtjs/color-mode",
   ],
   vite: {
     build: {

@@ -11,6 +11,7 @@
       <UButton
         icon="i-heroicons-plus"
         color="primary"
+        class="cursor-pointer"
         @click="showAddCategoryModal = true"
       >
         {{ $t("admin.categories.addCategory") }}
@@ -56,11 +57,17 @@
     >
       <template #footer="{ close }">
         <div class="flex justify-end gap-3">
-          <UButton color="neutral" variant="soft" @click="close">
+          <UButton
+            color="neutral"
+            class="cursor-pointer"
+            variant="soft"
+            @click="close"
+          >
             {{ $t("admin.categories.confirm.deleteCancel") }}
           </UButton>
           <UButton
             color="error"
+            class="cursor-pointer"
             :loading="isDeletingCategory"
             @click="confirmDelete"
           >
@@ -210,6 +217,7 @@ const columns = computed<TableColumn<InventoryCategory>[]>(() => [
           variant: "ghost",
           color: "neutral",
           size: "sm",
+          class: "cursor-pointer",
           onClick: () => openEditModal(row.original),
         }),
         h(UButton, {
@@ -217,6 +225,7 @@ const columns = computed<TableColumn<InventoryCategory>[]>(() => [
           variant: "ghost",
           color: "error",
           size: "sm",
+          class: "cursor-pointer",
           onClick: () => openDeleteModal(row.original),
         }),
       ]);

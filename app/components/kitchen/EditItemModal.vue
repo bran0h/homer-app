@@ -146,11 +146,17 @@
 
     <template #footer="{ close }">
       <div class="flex justify-end gap-3">
-        <UButton color="neutral" variant="soft" @click="close">
+        <UButton
+          color="neutral"
+          class="cursor-pointer"
+          variant="soft"
+          @click="close"
+        >
           {{ $t("kitchen.fridge.modal.cancel") }}
         </UButton>
         <UButton
           color="primary"
+          class="cursor-pointer"
           :loading="isSubmitting"
           @click="handleEditItem"
         >

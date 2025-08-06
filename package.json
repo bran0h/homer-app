@@ -15,6 +15,7 @@
     "@nuxt/eslint": "1.7.1",
     "@nuxt/image": "1.10.0",
     "@nuxt/ui": "^3.3.0",
+    "@nuxtjs/color-mode": "3.5.2",
     "@nuxtjs/i18n": "10.0.3",
     "@nuxtjs/supabase": "1.6.0",
     "@types/luxon": "^3.6.2",

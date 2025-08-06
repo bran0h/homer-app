@@ -47,18 +47,20 @@
           v-model="selectedStatus"
           :items="statusOptions"
           :placeholder="$t('kitchen.fridge.filters.allStatus')"
+          class="cursor-pointer"
         />
 
         <USelect
           v-model="selectedCategory"
           :items="categoryOptions"
           :placeholder="$t('kitchen.fridge.filters.allCategories')"
-          class="w-48"
+          class="w-48 cursor-pointer"
         />
 
         <UButton
           icon="i-heroicons-plus"
           color="primary"
+          class="cursor-pointer"
           @click="showAddItemModal = true"
         >
           {{ $t("kitchen.fridge.addItem") }}
@@ -105,12 +107,18 @@
     >
       <template #footer="{ close }">
         <div class="flex justify-end gap-3">
-          <UButton color="neutral" variant="soft" @click="close">
+          <UButton
+            color="neutral"
+            class="cursor-pointer"
+            variant="soft"
+            @click="close"
+          >
             {{ $t("kitchen.fridge.confirm.deleteCancel") }}
           </UButton>
           <UButton
             color="error"
             :loading="isDeletingItem"
+            class="cursor-pointer"
             @click="confirmDelete"
           >
             {{ $t("kitchen.fridge.confirm.deleteConfirm") }}
@@ -264,6 +272,7 @@ const columns = computed<TableColumn<ItemWithRelations>[]>(() => [
                 icon: "i-heroicons-pencil",
                 variant: "ghost",
                 color: "neutral",
+                class: "cursor-pointer",
                 size: "sm",
                 onClick: () => editItem(row.original),
               }),
@@ -271,6 +280,7 @@ const columns = computed<TableColumn<ItemWithRelations>[]>(() => [
                 icon: "i-heroicons-trash",
                 variant: "ghost",
                 color: "error",
+                class: "cursor-pointer",
                 size: "sm",
                 onClick: () => deleteItem(row.original),
               }),

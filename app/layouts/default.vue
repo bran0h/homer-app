@@ -13,9 +13,6 @@
           content-orientation="vertical"
           :items="items"
           class="justify-center"
-          :ui="{
-            content: 'bg-black',
-          }"
         />
       </div>
       <!-- Side menu -->
@@ -73,6 +70,8 @@ const { t, locale, setLocale } = useI18n();
 
 const sideMenuDisplayed = ref(false);
 const { isAdmin } = useUser();
+
+const colorMode = useColorMode();
 
 const items = computed<NavigationMenuItem[]>(() => {
   const paths: (NavigationMenuItem | undefined)[] = [
@@ -151,6 +150,14 @@ const items = computed<NavigationMenuItem[]>(() => {
           label: t(`navigation.changeTo${locale.value === "sk" ? "En" : "Sk"}`),
           icon: "i-lucide-globe",
           onClick: () => setLocale(locale.value === "sk" ? "en" : "sk"),
+        },
+        {
+          label: t("navigation.theme"),
+          icon: colorMode.value === "light" ? "i-lucide-sun" : "i-lucide-moon",
+          onClick: () => {
+            colorMode.preference =
+              colorMode.value === "light" ? "dark" : "light";
+          },
         },
         {
           label: t("navigation.logout"),

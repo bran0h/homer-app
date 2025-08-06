@@ -13,6 +13,7 @@
         "profile": "Profil",
         "changeToSk": "Zmeniť na slovenčinu",
         "changeToEn": "Zmeniť na angličtinu",
+        "theme": "Téma",
         "logout": "Odhlásiť sa"
     },
     "auth": {
