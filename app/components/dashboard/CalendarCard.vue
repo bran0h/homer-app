@@ -16,8 +16,13 @@
 </template>
 <script lang="ts" setup>
 import { CalendarDate } from "@internationalized/date";
+import { DateTime } from "luxon";
 
-const value = ref(new CalendarDate(2022, 2, 3)) as Ref<CalendarDate>;
+const today = DateTime.now();
+
+const value = ref(
+  new CalendarDate(today.year, today.month, today.day)
+) as Ref<CalendarDate>;
 
 const { data, status } = useFetch(
   `/api/calendar/nameday?date=${value.value.toString()}`
