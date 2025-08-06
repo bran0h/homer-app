@@ -234,15 +234,20 @@ const columns = computed<TableColumn<ItemWithRelations>[]>(() => [
     accessorKey: "quantity",
     header: t("kitchen.fridge.table.quantity"),
     enableSorting: true,
-  },
-  {
-    accessorKey: "unit",
-    header: t("kitchen.fridge.table.unit"),
+    cell: ({ row }) => `${row.original.quantity} ${row.original.unit}`,
   },
   {
     accessorKey: "status",
     header: t("kitchen.fridge.table.status"),
     enableSorting: true,
+    cell: ({ row }) => {
+      const status = row.original.status;
+      return h(
+        "span",
+        { class: `text-${status}` },
+        t(`kitchen.fridge.status.${snakeToCamelCase(status)}`)
+      );
+    },
   },
   {
     accessorKey: "expiration_date",
@@ -276,3 +281,17 @@ const columns = computed<TableColumn<ItemWithRelations>[]>(() => [
     : []),
 ]);
 </script>
+<style>
+.text-in_stock {
+  color: #16a34a; /* Green */
+}
+.text-low_stock {
+  color: #f59e0b; /* Yellow */
+}
+.text-out_of_stock {
+  color: #dc2626; /* Red */
+}
+.text-expired {
+  color: #9ca3af; /* Gray */
+}
+</style>

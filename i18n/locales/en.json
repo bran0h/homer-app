@@ -8,6 +8,7 @@
         "calendar": "Calendar",
         "admin": "Administration",
         "users": "Users",
+        "categories": "Categories",
         "options": "Options",
         "profile": "Profile",
         "changeToSk": "Change to Slovak",
@@ -73,6 +74,57 @@
             "roles": "Roles",
             "createdAt": "Created At",
             "actions": "Actions"
+        },
+        "categories": {
+            "title": "Category Management",
+            "description": "Manage inventory categories",
+            "addCategory": "Add Category",
+            "table": {
+                "name": "Name",
+                "description": "Description",
+                "color": "Color",
+                "createdAt": "Created At",
+                "actions": "Actions",
+                "noCategories": "No categories found",
+                "noCategoriesDescription": "Start by adding some categories to organize your inventory."
+            },
+            "modal": {
+                "addCategory": "Add New Category",
+                "addCategoryDescription": "Create a new category to organize your inventory items",
+                "editCategory": "Edit Category",
+                "editCategoryDescription": "Update the details of this category",
+                "cancel": "Cancel",
+                "save": "Save Category",
+                "update": "Update Category"
+            },
+            "form": {
+                "name": "Name",
+                "namePlaceholder": "Enter category name",
+                "description": "Description",
+                "descriptionPlaceholder": "Enter category description",
+                "color": "Color",
+                "colorPlaceholder": "Select category color"
+            },
+            "errors": {
+                "nameRequired": "Category name is required",
+                "createFailed": "Failed to create category",
+                "updateFailed": "Failed to update category",
+                "deleteFailed": "Failed to delete category",
+                "categoryNotFound": "Category not found",
+                "categoryInUse": "Category cannot be deleted",
+                "categoryInUseDescription": "This category is currently being used by inventory items and cannot be deleted."
+            },
+            "success": {
+                "categoryAdded": "Category added successfully",
+                "categoryUpdated": "Category updated successfully",
+                "categoryDeleted": "Category deleted successfully"
+            },
+            "confirm": {
+                "deleteTitle": "Delete Category",
+                "deleteDescription": "Are you sure you want to delete '{name}'? This action cannot be undone.",
+                "deleteConfirm": "Delete",
+                "deleteCancel": "Cancel"
+            }
         }
     },
     "kitchen": {

@@ -8,6 +8,7 @@
         "calendar": "Kalendár",
         "admin": "Administrácia",
         "users": "Používatelia",
+        "categories": "Kategórie",
         "options": "Možnosti",
         "profile": "Profil",
         "changeToSk": "Zmeniť na slovenčinu",
@@ -73,6 +74,57 @@
             "roles": "Roly",
             "createdAt": "Vytvorené",
             "actions": "Akcie"
+        },
+        "categories": {
+            "title": "Správa kategórií",
+            "description": "Spravovať kategórie inventára",
+            "addCategory": "Pridať kategóriu",
+            "table": {
+                "name": "Názov",
+                "description": "Popis",
+                "color": "Farba",
+                "createdAt": "Vytvorené",
+                "actions": "Akcie",
+                "noCategories": "Žiadne kategórie",
+                "noCategoriesDescription": "Začnite pridaním kategórií pre organizáciu inventára."
+            },
+            "modal": {
+                "addCategory": "Pridať novú kategóriu",
+                "addCategoryDescription": "Vytvorte novú kategóriu pre organizáciu inventárnych položiek",
+                "editCategory": "Upraviť kategóriu",
+                "editCategoryDescription": "Aktualizujte detaily tejto kategórie",
+                "cancel": "Zrušiť",
+                "save": "Uložiť kategóriu",
+                "update": "Aktualizovať kategóriu"
+            },
+            "form": {
+                "name": "Názov",
+                "namePlaceholder": "Zadajte názov kategórie",
+                "description": "Popis",
+                "descriptionPlaceholder": "Zadajte popis kategórie",
+                "color": "Farba",
+                "colorPlaceholder": "Vyberte farbu kategórie"
+            },
+            "errors": {
+                "nameRequired": "Názov kategórie je povinný",
+                "createFailed": "Nepodarilo sa vytvoriť kategóriu",
+                "updateFailed": "Nepodarilo sa aktualizovať kategóriu",
+                "deleteFailed": "Nepodarilo sa vymazať kategóriu",
+                "categoryNotFound": "Kategória nebola nájdená",
+                "categoryInUse": "Kategóriu nie je možné vymazať",
+                "categoryInUseDescription": "Táto kategória sa momentálne používa v inventárnych položkách a nie je možné ju vymazať."
+            },
+            "success": {
+                "categoryAdded": "Kategória bola úspešne pridaná",
+                "categoryUpdated": "Kategória bola úspešne aktualizovaná",
+                "categoryDeleted": "Kategória bola úspešne vymazaná"
+            },
+            "confirm": {
+                "deleteTitle": "Vymazať kategóriu",
+                "deleteDescription": "Ste si istí, že chcete vymazať '{name}'? Túto akciu nie je možné vrátiť späť.",
+                "deleteConfirm": "Vymazať",
+                "deleteCancel": "Zrušiť"
+            }
         }
     },
     "kitchen": {
@@ -94,9 +146,9 @@
             },
             "status": {
                 "all": "Všetky stavy",
-                "inStock": "Na sklade",
-                "lowStock": "Málo na sklade",
-                "outOfStock": "Vypredané",
+                "inStock": "Dostupné",
+                "lowStock": "Dochádzajúce",
+                "outOfStock": "Chýbajúce",
                 "expired": "Expirované"
             },
             "categories": {

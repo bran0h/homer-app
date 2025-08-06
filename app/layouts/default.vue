@@ -127,6 +127,12 @@ const items = computed<NavigationMenuItem[]>(() => {
               to: "/admin/users",
               active: route.path === "/admin/users",
             },
+            {
+              label: t("navigation.categories"),
+              icon: "i-lucide-tags",
+              to: "/admin/categories",
+              active: route.path === "/admin/categories",
+            },
           ],
         }
       : undefined,
