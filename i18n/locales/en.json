@@ -13,6 +13,7 @@
         "profile": "Profile",
         "changeToSk": "Change to Slovak",
         "changeToEn": "Change to English",
+        "theme": "Theme",
         "logout": "Logout"
     },
     "auth": {

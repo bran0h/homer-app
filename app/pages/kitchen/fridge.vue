@@ -58,6 +58,7 @@
         />
 
         <UButton
+          v-if="canEditFridge"
           icon="i-heroicons-plus"
           color="primary"
           class="cursor-pointer"
@@ -139,14 +140,8 @@ import type { ItemWithRelations } from "~~/shared/types/fridge";
 const { categories, stats, itemsStatus, filterItems, refreshItems } =
   useInventory();
 const inventoryService = useInventoryService();
-const { isAdmin } = useUser();
+const { canEditFridge } = useUser();
 const toast = useToast();
-
-// Check if user can edit (admin or member)
-const isMember = computed(() => {
-  // Add role check logic here once user roles are available
-  return true; // Placeholder
-});
 
 // Reactive filters
 const searchQuery = ref("");
@@ -262,7 +257,7 @@ const columns = computed<TableColumn<ItemWithRelations>[]>(() => [
     header: t("kitchen.fridge.table.expires"),
     enableSorting: true,
   },
-  ...(isAdmin.value || isMember.value
+  ...(canEditFridge.value
     ? ([
         {
           header: t("kitchen.fridge.table.actions"),
