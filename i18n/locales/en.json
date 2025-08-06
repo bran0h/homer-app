@@ -114,8 +114,12 @@
             },
             "modal": {
                 "addItem": "Add New Item",
+                "addItemDescription": "Fill out the form below to add a new item to your fridge inventory",
+                "editItem": "Edit Item",
+                "editItemDescription": "Update the details of this inventory item",
                 "cancel": "Cancel",
-                "save": "Save Item"
+                "save": "Save Item",
+                "update": "Update Item"
             },
             "form": {
                 "name": "Name",
@@ -139,10 +143,20 @@
             },
             "errors": {
                 "nameRequired": "Item name is required",
-                "createFailed": "Failed to create item"
+                "createFailed": "Failed to create item",
+                "updateFailed": "Failed to update item",
+                "deleteFailed": "Failed to delete item"
             },
             "success": {
-                "itemAdded": "Item added successfully"
+                "itemAdded": "Item added successfully",
+                "itemUpdated": "Item updated successfully",
+                "itemDeleted": "Item deleted successfully"
+            },
+            "confirm": {
+                "deleteTitle": "Delete Item",
+                "deleteDescription": "Are you sure you want to delete '{name}'? This action cannot be undone.",
+                "deleteConfirm": "Delete",
+                "deleteCancel": "Cancel"
             }
         }
     }

@@ -81,160 +81,39 @@
     </div>
 
     <!-- Add Item Modal -->
-    <UModal
+    <KitchenAddItemModal
       v-model:open="showAddItemModal"
-      :title="$t('kitchen.fridge.modal.addItem')"
-      class="sm:max-w-2xl"
+      @item-added="handleItemAdded"
+    />
+
+    <!-- Edit Item Modal -->
+    <KitchenEditItemModal
+      v-model:open="showEditItemModal"
+      :item="selectedItem"
+      @item-updated="handleItemUpdated"
+    />
+
+    <!-- Delete Confirmation Modal -->
+    <UModal
+      v-model:open="showDeleteConfirmModal"
+      :title="$t('kitchen.fridge.confirm.deleteTitle')"
+      :description="
+        $t('kitchen.fridge.confirm.deleteDescription', {
+          name: itemToDelete?.name || '',
+        })
+      "
     >
-      <template #body>
-        <UForm :state="newItem" class="space-y-4" @submit="handleAddItem">
-          <!-- Name -->
-          <UFormField
-            :label="$t('kitchen.fridge.form.name')"
-            name="name"
-            required
-          >
-            <UInput
-              v-model="newItem.name"
-              :placeholder="$t('kitchen.fridge.form.namePlaceholder')"
-              required
-              class="w-full"
-            />
-          </UFormField>
-
-          <!-- Description -->
-          <UFormField
-            :label="$t('kitchen.fridge.form.description')"
-            name="description"
-          >
-            <UTextarea
-              v-model="newItem.description"
-              :placeholder="$t('kitchen.fridge.form.descriptionPlaceholder')"
-              :rows="3"
-              class="w-full"
-            />
-          </UFormField>
-
-          <!-- Quantity and Unit -->
-          <div class="grid grid-cols-2 gap-4">
-            <UFormField
-              :label="$t('kitchen.fridge.form.quantity')"
-              name="quantity"
-              required
-            >
-              <UInput
-                v-model.number="newItem.quantity"
-                type="number"
-                min="0"
-                step="0.1"
-                required
-              />
-            </UFormField>
-
-            <UFormField :label="$t('kitchen.fridge.form.unit')" name="unit">
-              <UInput
-                v-model="newItem.unit"
-                :placeholder="$t('kitchen.fridge.form.unitPlaceholder')"
-              />
-            </UFormField>
-          </div>
-
-          <!-- Min Quantity -->
-          <UFormField
-            :label="$t('kitchen.fridge.form.minQuantity')"
-            name="min_quantity"
-          >
-            <UInput
-              v-model.number="newItem.min_quantity"
-              type="number"
-              min="0"
-              step="0.1"
-              :placeholder="$t('kitchen.fridge.form.minQuantityPlaceholder')"
-              class="w-full"
-            />
-          </UFormField>
-
-          <!-- Status -->
-          <UFormField
-            :label="$t('kitchen.fridge.form.status')"
-            name="status"
-            required
-          >
-            <USelect
-              v-model="newItem.status"
-              :items="statusFormOptions"
-              required
-              class="w-full"
-            />
-          </UFormField>
-
-          <!-- Dates -->
-          <div class="grid grid-cols-2 gap-4">
-            <UFormField
-              :label="$t('kitchen.fridge.form.purchaseDate')"
-              name="purchase_date"
-            >
-              <UInput v-model="newItem.purchase_date" type="date" />
-            </UFormField>
-
-            <UFormField
-              :label="$t('kitchen.fridge.form.expirationDate')"
-              name="expiration_date"
-            >
-              <UInput v-model="newItem.expiration_date" type="date" />
-            </UFormField>
-          </div>
-
-          <!-- Categories -->
-          <UFormField
-            :label="$t('kitchen.fridge.form.categories')"
-            name="categories"
-          >
-            <USelectMenu
-              v-model="selectedCategories"
-              :items="availableCategories"
-              multiple
-              :placeholder="$t('kitchen.fridge.form.categoriesPlaceholder')"
-              class="w-full"
-            />
-          </UFormField>
-
-          <!-- Tags -->
-          <UFormField :label="$t('kitchen.fridge.form.tags')" name="tags">
-            <USelectMenu
-              v-model="selectedTags"
-              :items="availableTags"
-              multiple
-              create-item
-              :placeholder="$t('kitchen.fridge.form.tagsPlaceholder')"
-              class="w-full"
-              @create="onCreateTag"
-            />
-          </UFormField>
-
-          <!-- Notes -->
-          <UFormField :label="$t('kitchen.fridge.form.notes')" name="notes">
-            <UTextarea
-              v-model="newItem.notes"
-              :placeholder="$t('kitchen.fridge.form.notesPlaceholder')"
-              :rows="2"
-              class="w-full"
-            />
-          </UFormField>
-        </UForm>
-      </template>
-
       <template #footer="{ close }">
         <div class="flex justify-end gap-3">
           <UButton color="neutral" variant="soft" @click="close">
-            {{ $t("kitchen.fridge.modal.cancel") }}
+            {{ $t("kitchen.fridge.confirm.deleteCancel") }}
           </UButton>
           <UButton
-            color="primary"
-            :loading="isSubmitting"
-            @click="handleAddItem"
+            color="error"
+            :loading="isDeletingItem"
+            @click="confirmDelete"
           >
-            {{ $t("kitchen.fridge.modal.save") }}
+            {{ $t("kitchen.fridge.confirm.deleteConfirm") }}
           </UButton>
         </div>
       </template>
@@ -243,10 +122,14 @@
 </template>
 
 <script lang="ts" setup>
+import { UButton } from "#components";
+import type { TableColumn } from "@nuxt/ui";
 import { useInventoryService } from "~/services/useInventoryService";
+import type { ItemWithRelations } from "~~/shared/types/fridge";
 
 // Composables
-const { categories, stats, itemsStatus, tags, filterItems } = useInventory();
+const { categories, stats, itemsStatus, filterItems, refreshItems } =
+  useInventory();
 const inventoryService = useInventoryService();
 const { isAdmin } = useUser();
 const toast = useToast();
@@ -262,22 +145,11 @@ const searchQuery = ref("");
 const selectedStatus = ref("");
 const selectedCategory = ref("");
 const showAddItemModal = ref(false);
-
-// Form data
-const isSubmitting = ref(false);
-const newItem = ref({
-  name: "",
-  description: "",
-  quantity: 0,
-  unit: "",
-  min_quantity: null as number | null,
-  status: "in_stock" as "in_stock" | "low_stock" | "out_of_stock" | "expired",
-  purchase_date: "",
-  expiration_date: "",
-  notes: "",
-});
-const selectedCategories = ref<{ label: string; value: string }[]>([]);
-const selectedTags = ref<{ label: string; value: string }[]>([]);
+const showEditItemModal = ref(false);
+const selectedItem = ref<ItemWithRelations>();
+const showDeleteConfirmModal = ref(false);
+const itemToDelete = ref<ItemWithRelations>();
+const isDeletingItem = ref(false);
 
 // Filter options
 const statusOptions = computed(() => [
@@ -296,105 +168,49 @@ const categoryOptions = computed(() => [
   })) || []),
 ]);
 
-// Form options
-const statusFormOptions = computed(() => [
-  { label: t("kitchen.fridge.status.inStock"), value: "in_stock" },
-  { label: t("kitchen.fridge.status.lowStock"), value: "low_stock" },
-  { label: t("kitchen.fridge.status.outOfStock"), value: "out_of_stock" },
-  { label: t("kitchen.fridge.status.expired"), value: "expired" },
-]);
-
-const availableCategories = computed(
-  () =>
-    categories.value?.map((cat) => ({
-      label: cat.name,
-      value: cat.id,
-    })) || []
-);
-
-const availableTags = computed(() => {
-  return (
-    tags.value?.map((tag) => ({
-      label: tag.name,
-      value: tag.id,
-    })) || []
-  );
-});
-
-// Handle creating new tags
-const onCreateTag = async (newTagValue: string) => {
-  // Save new tag to the service (if needed)
-  const newTag = await inventoryService.createTag({
-    name: newTagValue,
-  });
-
-  // Add to available tags for future use
-  availableTags.value.push({
-    label: newTag.name,
-    value: newTag.id,
-  });
-
-  // Add to selected tags
-  selectedTags.value.push({
-    label: newTag.name,
-    value: newTag.id,
-  });
+// Item management functions
+const editItem = (row: ItemWithRelations) => {
+  selectedItem.value = row;
+  showEditItemModal.value = true;
 };
 
-// Reset form
-const resetForm = () => {
-  newItem.value = {
-    name: "",
-    description: "",
-    quantity: 0,
-    unit: "",
-    min_quantity: null,
-    status: "in_stock",
-    purchase_date: "",
-    expiration_date: "",
-    notes: "",
-  };
-  selectedCategories.value = [];
-  selectedTags.value = [];
+const deleteItem = (item: ItemWithRelations) => {
+  itemToDelete.value = item;
+  showDeleteConfirmModal.value = true;
 };
 
-// Handle form submission
-const handleAddItem = async () => {
-  if (!newItem.value.name.trim()) {
-    toast.add({
-      title: t("kitchen.fridge.errors.nameRequired"),
-      color: "error",
-    });
-    return;
-  }
+const confirmDelete = async () => {
+  if (!itemToDelete.value) return;
 
-  isSubmitting.value = true;
-
+  isDeletingItem.value = true;
   try {
-    // Create the item (we'll implement this with the service later)
-    const item = await inventoryService.createItem(newItem.value);
-    for (const category of selectedCategories.value) {
-      await inventoryService.addItemToCategory(item.id, category.value);
-    }
-    for (const tag of selectedTags.value) {
-      await inventoryService.addTagToItem(item.id, tag.value);
-    }
-    // For now, just show success and close modal
+    await inventoryService.deleteItem(itemToDelete.value.id);
     toast.add({
-      title: t("kitchen.fridge.success.itemAdded"),
+      title: t("kitchen.fridge.success.itemDeleted"),
       color: "success",
     });
-
-    showAddItemModal.value = false;
-    resetForm();
+    await refreshItems();
+    showDeleteConfirmModal.value = false;
+    itemToDelete.value = undefined;
   } catch {
     toast.add({
-      title: t("kitchen.fridge.errors.createFailed"),
+      title: t("kitchen.fridge.errors.deleteFailed"),
       color: "error",
     });
   } finally {
-    isSubmitting.value = false;
+    isDeletingItem.value = false;
   }
+};
+
+const handleItemAdded = async () => {
+  await refreshItems();
+  showAddItemModal.value = false;
+};
+
+const handleItemUpdated = async () => {
+  await refreshItems();
+  showEditItemModal.value = false;
+  selectedItem.value = undefined;
 };
 
 // Filtered items
@@ -408,7 +224,7 @@ const filteredItems = computed(() => {
 
 // Table columns
 const { t } = useI18n();
-const columns = computed(() => [
+const columns = computed<TableColumn<ItemWithRelations>[]>(() => [
   {
     accessorKey: "name",
     header: t("kitchen.fridge.table.name"),
@@ -434,12 +250,29 @@ const columns = computed(() => [
     enableSorting: true,
   },
   ...(isAdmin.value || isMember.value
-    ? [
+    ? ([
         {
-          accessorKey: "actions",
           header: t("kitchen.fridge.table.actions"),
+          cell: ({ row }) => {
+            return h("div", { class: "flex gap-2" }, [
+              h(UButton, {
+                icon: "i-heroicons-pencil",
+                variant: "ghost",
+                color: "neutral",
+                size: "sm",
+                onClick: () => editItem(row.original),
+              }),
+              h(UButton, {
+                icon: "i-heroicons-trash",
+                variant: "ghost",
+                color: "error",
+                size: "sm",
+                onClick: () => deleteItem(row.original),
+              }),
+            ]);
+          },
         },
-      ]
+      ] as TableColumn<ItemWithRelations>[])
     : []),
 ]);
 </script>

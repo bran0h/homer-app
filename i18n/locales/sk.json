@@ -114,8 +114,12 @@
             },
             "modal": {
                 "addItem": "Pridať novú položku",
+                "addItemDescription": "Vyplňte formulár nižšie pre pridanie novej položky do inventára chladničky",
+                "editItem": "Upraviť položku",
+                "editItemDescription": "Aktualizujte detaily tejto inventárnej položky",
                 "cancel": "Zrušiť",
-                "save": "Uložiť položku"
+                "save": "Uložiť položku",
+                "update": "Aktualizovať položku"
             },
             "form": {
                 "name": "Názov",
@@ -139,10 +143,20 @@
             },
             "errors": {
                 "nameRequired": "Názov položky je povinný",
-                "createFailed": "Nepodarilo sa vytvoriť položku"
+                "createFailed": "Nepodarilo sa vytvoriť položku",
+                "updateFailed": "Nepodarilo sa aktualizovať položku",
+                "deleteFailed": "Nepodarilo sa vymazať položku"
             },
             "success": {
-                "itemAdded": "Položka bola úspešne pridaná"
+                "itemAdded": "Položka bola úspešne pridaná",
+                "itemUpdated": "Položka bola úspešne aktualizovaná",
+                "itemDeleted": "Položka bola úspešne vymazaná"
+            },
+            "confirm": {
+                "deleteTitle": "Vymazať položku",
+                "deleteDescription": "Ste si istí, že chcete vymazať '{name}'? Túto akciu nie je možné vrátiť späť.",
+                "deleteConfirm": "Vymazať",
+                "deleteCancel": "Zrušiť"
             }
         }
     },

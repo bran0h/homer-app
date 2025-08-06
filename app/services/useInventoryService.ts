@@ -223,6 +223,25 @@ export const useInventoryService = () => {
     if (error) throw error;
   };
 
+  // Helper methods for bulk operations
+  const removeAllCategoriesFromItem = async (itemId: string) => {
+    const { error } = await client
+      .from("inventory_item_categories")
+      .delete()
+      .eq("item_id", itemId);
+
+    if (error) throw error;
+  };
+
+  const removeAllTagsFromItem = async (itemId: string) => {
+    const { error } = await client
+      .from("inventory_item_tags")
+      .delete()
+      .eq("item_id", itemId);
+
+    if (error) throw error;
+  };
+
   return {
     // Items
     getItems,
@@ -248,5 +267,9 @@ export const useInventoryService = () => {
     removeItemFromCategory,
     addTagToItem,
     removeTagFromItem,
+
+    // Bulk operations
+    removeAllCategoriesFromItem,
+    removeAllTagsFromItem,
   };
 };
