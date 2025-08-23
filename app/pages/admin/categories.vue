@@ -82,11 +82,10 @@
 <script lang="ts" setup>
 import { UButton } from "#components";
 import type { TableColumn } from "@nuxt/ui";
-import { useInventoryService } from "~/services/useInventoryService";
+import { useCategoriesService } from "~/services/useCategoriesService";
 import type { InventoryCategory } from "~~/shared/types/fridge";
 
 // Composables
-const inventoryService = useInventoryService();
 const toast = useToast();
 const { t } = useI18n();
 
@@ -98,26 +97,15 @@ const selectedCategory = ref<InventoryCategory | null>(null);
 const categoryToDelete = ref<InventoryCategory | null>(null);
 const isDeletingCategory = ref(false);
 
+// Services
+const categoriesService = useCategoriesService();
+
 // Data fetching
 const {
   data: categories,
   status: categoriesStatus,
   refresh: refreshCategories,
-} = useAsyncData("admin-categories", () => inventoryService.getCategories());
-
-// Check if category is used in items
-const checkCategoryUsage = async (categoryId: string) => {
-  try {
-    const items = await inventoryService.getItems();
-    return items.some((item) =>
-      item.inventory_item_categories?.some(
-        (ic) => ic.inventory_categories?.id === categoryId
-      )
-    );
-  } catch {
-    return false;
-  }
-};
+} = useAsyncData("admin-categories", () => categoriesService.getCategories());
 
 // Category management functions
 const openEditModal = (category: InventoryCategory) => {
@@ -126,8 +114,8 @@ const openEditModal = (category: InventoryCategory) => {
 };
 
 const openDeleteModal = async (category: InventoryCategory) => {
-  const isUsed = await checkCategoryUsage(category.id);
-  if (isUsed) {
+  const count = await categoriesService.getCategoryUsageCount(category.id);
+  if (count > 0) {
     toast.add({
       title: t("admin.categories.errors.categoryInUse"),
       description: t("admin.categories.errors.categoryInUseDescription"),
@@ -157,7 +145,7 @@ const confirmDelete = async () => {
 
   isDeletingCategory.value = true;
   try {
-    await inventoryService.deleteCategory(categoryToDelete.value.id);
+    await categoriesService.deleteCategory(categoryToDelete.value.id);
     toast.add({
       title: t("admin.categories.success.categoryDeleted"),
       color: "success",

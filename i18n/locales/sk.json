@@ -155,6 +155,15 @@
             "categories": {
                 "all": "Všetky kategórie"
             },
+            "units": {
+                "pieces": "Kusy",
+                "kilogram": "Kilogram",
+                "gram": "Gram",
+                "liter": "Liter",
+                "mililiter": "Mililiter",
+                "tableSpoon": "Polievková lyžica",
+                "teaSpoon": "Čajová lyžička"
+            },
             "table": {
                 "name": "Názov",
                 "quantity": "Množstvo",

@@ -133,13 +133,12 @@
 <script lang="ts" setup>
 import { UButton } from "#components";
 import type { TableColumn } from "@nuxt/ui";
-import { useInventoryService } from "~/services/useInventoryService";
+import { useItemsService } from "~/services/useItemsService";
+import { filterItems } from "~/utils/inventory";
 import type { ItemWithRelations } from "~~/shared/types/fridge";
 
 // Composables
-const { categories, stats, itemsStatus, filterItems, refreshItems } =
-  useInventory();
-const inventoryService = useInventoryService();
+const { categories, stats, itemsStatus, refreshItems, items } = useInventory();
 const { canEditFridge } = useUser();
 const toast = useToast();
 
@@ -181,13 +180,13 @@ const deleteItem = (item: ItemWithRelations) => {
   itemToDelete.value = item;
   showDeleteConfirmModal.value = true;
 };
-
+const itemsService = useItemsService();
 const confirmDelete = async () => {
   if (!itemToDelete.value) return;
 
   isDeletingItem.value = true;
   try {
-    await inventoryService.deleteItem(itemToDelete.value.id);
+    await itemsService.deleteItem(itemToDelete.value.id);
     toast.add({
       title: t("kitchen.fridge.success.itemDeleted"),
       color: "success",
@@ -218,7 +217,8 @@ const handleItemUpdated = async () => {
 
 // Filtered items
 const filteredItems = computed(() => {
-  return filterItems({
+  if (!items.value) return [];
+  return filterItems(items.value, {
     search: searchQuery.value,
     status: selectedStatus.value,
     category: selectedCategory.value,
@@ -237,7 +237,11 @@ const columns = computed<TableColumn<ItemWithRelations>[]>(() => [
     accessorKey: "quantity",
     header: t("kitchen.fridge.table.quantity"),
     enableSorting: true,
-    cell: ({ row }) => `${row.original.quantity} ${row.original.unit}`,
+    cell: ({ row }) => {
+      const unit = row.original.unit;
+      const unitLabel = unit ? t(`kitchen.fridge.units.${snakeToCamelCase(unit)}`) : t("kitchen.fridge.units.pieces");
+      return `${row.original.quantity} ${unitLabel}`;
+    },
   },
   {
     accessorKey: "status",

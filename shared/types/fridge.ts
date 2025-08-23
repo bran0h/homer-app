@@ -21,6 +21,15 @@ export type ItemWithRelations = InventoryItem & {
 
 export type InventoryItemStatus = Database["public"]["Enums"]["item_status"];
 
+export type InventoryItemUnit =
+  | "pieces"
+  | "kilogram"
+  | "gram"
+  | "liter"
+  | "mililiter"
+  | "table_spoon"
+  | "tea_spoon";
+
 export type CreateItemDTO =
   Database["public"]["Tables"]["inventory_items"]["Insert"];
 

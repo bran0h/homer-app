@@ -40,21 +40,20 @@
           <UFormField
             :label="$t('kitchen.fridge.form.quantity')"
             name="quantity"
-            required
           >
             <UInput
               v-model.number="editItem.quantity"
               type="number"
               min="0"
               step="0.1"
-              required
             />
           </UFormField>
 
           <UFormField :label="$t('kitchen.fridge.form.unit')" name="unit">
-            <UInput
+            <USelect
               v-model="editItem.unit"
-              :placeholder="$t('kitchen.fridge.form.unitPlaceholder')"
+              :items="unitOptions"
+              class="w-full"
             />
           </UFormField>
         </div>
@@ -75,15 +74,10 @@
         </UFormField>
 
         <!-- Status -->
-        <UFormField
-          :label="$t('kitchen.fridge.form.status')"
-          name="status"
-          required
-        >
+        <UFormField :label="$t('kitchen.fridge.form.status')" name="status">
           <USelect
             v-model="editItem.status"
             :items="statusFormOptions"
-            required
             class="w-full"
           />
         </UFormField>
@@ -168,7 +162,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useInventoryService } from "~/services/useInventoryService";
+import { useItemsService } from "~/services/useItemsService";
+import { useTagsService } from "~/services/useTagsService";
 import type { ItemWithRelations } from "~~/shared/types/fridge";
 
 // Props
@@ -188,7 +183,6 @@ const emit = defineEmits<Emits>();
 
 // Composables
 const { categories, tags } = useInventory();
-const inventoryService = useInventoryService();
 const toast = useToast();
 const { t } = useI18n();
 
@@ -206,8 +200,8 @@ const editItem = ref({
   name: "",
   description: "",
   quantity: 0,
-  unit: "",
-  min_quantity: null as number | null,
+  unit: "pieces",
+  min_quantity: undefined as number | undefined,
   status: "in_stock" as "in_stock" | "low_stock" | "out_of_stock" | "expired",
   purchase_date: "",
   expiration_date: "",
@@ -223,6 +217,16 @@ const statusFormOptions = computed(() => [
   { label: t("kitchen.fridge.status.lowStock"), value: "low_stock" },
   { label: t("kitchen.fridge.status.outOfStock"), value: "out_of_stock" },
   { label: t("kitchen.fridge.status.expired"), value: "expired" },
+]);
+
+const unitOptions = computed(() => [
+  { label: t("kitchen.fridge.units.pieces"), value: "pieces" },
+  { label: t("kitchen.fridge.units.kilogram"), value: "kilogram" },
+  { label: t("kitchen.fridge.units.gram"), value: "gram" },
+  { label: t("kitchen.fridge.units.liter"), value: "liter" },
+  { label: t("kitchen.fridge.units.mililiter"), value: "mililiter" },
+  { label: t("kitchen.fridge.units.tableSpoon"), value: "table_spoon" },
+  { label: t("kitchen.fridge.units.teaSpoon"), value: "tea_spoon" },
 ]);
 
 const availableCategories = computed(
@@ -243,10 +247,11 @@ const availableTags = computed(() => {
 });
 
 // Handle creating new tags
+const tagsService = useTagsService();
 const onCreateTag = async (newTagValue: string) => {
   try {
     // Save new tag to the service
-    const newTag = await inventoryService.createTag({
+    const newTag = await tagsService.createTag({
       name: newTagValue,
     });
 
@@ -270,8 +275,8 @@ const populateForm = (item: ItemWithRelations) => {
     name: item.name,
     description: item.description || "",
     quantity: item.quantity || 0,
-    unit: item.unit || "",
-    min_quantity: item.min_quantity,
+    unit: item.unit || "pieces",
+    min_quantity: item.min_quantity || undefined,
     status: item.status,
     purchase_date: item.purchase_date || "",
     expiration_date: item.expiration_date || "",
@@ -300,8 +305,8 @@ const resetForm = () => {
     name: "",
     description: "",
     quantity: 0,
-    unit: "",
-    min_quantity: null,
+    unit: "pieces",
+    min_quantity: undefined,
     status: "in_stock",
     purchase_date: "",
     expiration_date: "",
@@ -312,6 +317,7 @@ const resetForm = () => {
 };
 
 // Handle form submission
+const itemsService = useItemsService();
 const handleEditItem = async () => {
   if (!editItem.value.name.trim()) {
     toast.add({
@@ -332,33 +338,33 @@ const handleEditItem = async () => {
   isSubmitting.value = true;
 
   try {
-    // Update the item
-    await inventoryService.updateItem(editItem.value.id, {
+    // Prepare the item data, converting empty strings to null for optional date fields
+    const itemData = {
       name: editItem.value.name,
-      description: editItem.value.description,
+      description: editItem.value.description || null,
       quantity: editItem.value.quantity,
-      unit: editItem.value.unit,
+      unit: editItem.value.unit, // Unit is required now, so don't convert to null
       min_quantity: editItem.value.min_quantity,
       status: editItem.value.status,
-      purchase_date: editItem.value.purchase_date,
-      expiration_date: editItem.value.expiration_date,
-      notes: editItem.value.notes,
-    });
+      purchase_date: editItem.value.purchase_date || null,
+      expiration_date: editItem.value.expiration_date || null,
+      notes: editItem.value.notes || null,
+    };
+
+    // Update the item
+    await itemsService.updateItem(editItem.value.id, itemData);
 
     // Update categories (remove old ones and add new ones)
     // This is a simplified approach - in production you'd want to be more efficient
-    await inventoryService.removeAllCategoriesFromItem(editItem.value.id);
+    await itemsService.removeAllCategoriesFromItem(editItem.value.id);
     for (const category of selectedCategories.value) {
-      await inventoryService.addItemToCategory(
-        editItem.value.id,
-        category.value
-      );
+      await itemsService.addItemToCategory(editItem.value.id, category.value);
     }
 
     // Update tags
-    await inventoryService.removeAllTagsFromItem(editItem.value.id);
+    await itemsService.removeAllTagsFromItem(editItem.value.id);
     for (const tag of selectedTags.value) {
-      await inventoryService.addTagToItem(editItem.value.id, tag.value);
+      await itemsService.addTagToItem(editItem.value.id, tag.value);
     }
 
     toast.add({

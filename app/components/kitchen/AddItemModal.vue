@@ -40,21 +40,20 @@
           <UFormField
             :label="$t('kitchen.fridge.form.quantity')"
             name="quantity"
-            required
           >
             <UInput
               v-model.number="newItem.quantity"
               type="number"
               min="0"
               step="0.1"
-              required
             />
           </UFormField>
 
           <UFormField :label="$t('kitchen.fridge.form.unit')" name="unit">
-            <UInput
+            <USelect
               v-model="newItem.unit"
-              :placeholder="$t('kitchen.fridge.form.unitPlaceholder')"
+              :items="unitOptions"
+              class="w-full"
             />
           </UFormField>
         </div>
@@ -75,15 +74,10 @@
         </UFormField>
 
         <!-- Status -->
-        <UFormField
-          :label="$t('kitchen.fridge.form.status')"
-          name="status"
-          required
-        >
+        <UFormField :label="$t('kitchen.fridge.form.status')" name="status">
           <USelect
             v-model="newItem.status"
             :items="statusFormOptions"
-            required
             class="w-full"
           />
         </UFormField>
@@ -168,7 +162,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useInventoryService } from "~/services/useInventoryService";
+import { useItemsService } from "~/services/useItemsService";
+import { useTagsService } from "~/services/useTagsService";
 
 // Props
 interface Props {
@@ -186,7 +181,6 @@ const emit = defineEmits<Emits>();
 
 // Composables
 const { categories, tags } = useInventory();
-const inventoryService = useInventoryService();
 const toast = useToast();
 const { t } = useI18n();
 
@@ -203,8 +197,8 @@ const newItem = ref({
   name: "",
   description: "",
   quantity: 0,
-  unit: "",
-  min_quantity: null as number | null,
+  unit: "pieces",
+  min_quantity: undefined as number | undefined,
   status: "in_stock" as "in_stock" | "low_stock" | "out_of_stock" | "expired",
   purchase_date: "",
   expiration_date: "",
@@ -220,6 +214,16 @@ const statusFormOptions = computed(() => [
   { label: t("kitchen.fridge.status.lowStock"), value: "low_stock" },
   { label: t("kitchen.fridge.status.outOfStock"), value: "out_of_stock" },
   { label: t("kitchen.fridge.status.expired"), value: "expired" },
+]);
+
+const unitOptions = computed(() => [
+  { label: t("kitchen.fridge.units.pieces"), value: "pieces" },
+  { label: t("kitchen.fridge.units.kilogram"), value: "kilogram" },
+  { label: t("kitchen.fridge.units.gram"), value: "gram" },
+  { label: t("kitchen.fridge.units.liter"), value: "liter" },
+  { label: t("kitchen.fridge.units.mililiter"), value: "mililiter" },
+  { label: t("kitchen.fridge.units.tableSpoon"), value: "table_spoon" },
+  { label: t("kitchen.fridge.units.teaSpoon"), value: "tea_spoon" },
 ]);
 
 const availableCategories = computed(
@@ -238,12 +242,12 @@ const availableTags = computed(() => {
     })) || []
   );
 });
-
+const tagsService = useTagsService();
 // Handle creating new tags
 const onCreateTag = async (newTagValue: string) => {
   try {
     // Save new tag to the service
-    const newTag = await inventoryService.createTag({
+    const newTag = await tagsService.createTag({
       name: newTagValue,
     });
 
@@ -266,8 +270,8 @@ const resetForm = () => {
     name: "",
     description: "",
     quantity: 0,
-    unit: "",
-    min_quantity: null,
+    unit: "pieces",
+    min_quantity: undefined,
     status: "in_stock",
     purchase_date: "",
     expiration_date: "",
@@ -278,6 +282,7 @@ const resetForm = () => {
 };
 
 // Handle form submission
+const itemsService = useItemsService();
 const handleAddItem = async () => {
   if (!newItem.value.name.trim()) {
     toast.add({
@@ -290,17 +295,27 @@ const handleAddItem = async () => {
   isSubmitting.value = true;
 
   try {
+    // Prepare the item data, converting empty strings to null for optional date fields
+    const itemData = {
+      ...newItem.value,
+      purchase_date: newItem.value.purchase_date || null,
+      expiration_date: newItem.value.expiration_date || null,
+      description: newItem.value.description || null,
+      unit: newItem.value.unit, // Unit is required now, so don't convert to null
+      notes: newItem.value.notes || null,
+    };
+
     // Create the item
-    const item = await inventoryService.createItem(newItem.value);
+    const item = await itemsService.createItem(itemData);
 
     // Add categories
     for (const category of selectedCategories.value) {
-      await inventoryService.addItemToCategory(item.id, category.value);
+      await itemsService.addItemToCategory(item.id, category.value);
     }
 
     // Add tags
     for (const tag of selectedTags.value) {
-      await inventoryService.addTagToItem(item.id, tag.value);
+      await itemsService.addTagToItem(item.id, tag.value);
     }
 
     toast.add({

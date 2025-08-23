@@ -77,6 +77,6 @@ export default defineNuxtConfig({
   },
   supabase: {
     redirect: true,
-    types: "./shares/types/supabase.d.ts",
+    types: "./shared/types/supabase.d.ts",
   },
 });

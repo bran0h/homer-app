@@ -73,7 +73,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useInventoryService } from "~/services/useInventoryService";
+import { useCategoriesService } from "~/services/useCategoriesService";
 import type {
   InventoryCategory,
   UpdateCategoryDTO,
@@ -95,7 +95,6 @@ const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 // Composables
-const inventoryService = useInventoryService();
 const toast = useToast();
 const { t } = useI18n();
 
@@ -108,6 +107,7 @@ const isOpen = computed({
 const isSubmitting = ref(false);
 
 // Form data
+const categoryService = useCategoriesService();
 const editCategory = reactive<UpdateCategoryDTO>({
   name: "",
   description: "",
@@ -133,7 +133,7 @@ const handleEditCategory = async () => {
 
   isSubmitting.value = true;
   try {
-    await inventoryService.updateCategory(props.category.id, editCategory);
+    await categoryService.updateCategory(props.category.id, editCategory);
     toast.add({
       title: t("admin.categories.success.categoryUpdated"),
       color: "success",

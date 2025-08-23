@@ -69,7 +69,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useInventoryService } from "~/services/useInventoryService";
+import { useCategoriesService } from "~/services/useCategoriesService";
 import type { CreateCategoryDTO } from "~~/shared/types/fridge";
 
 // Props
@@ -87,7 +87,6 @@ const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 // Composables
-const inventoryService = useInventoryService();
 const toast = useToast();
 const { t } = useI18n();
 
@@ -100,6 +99,7 @@ const isOpen = computed({
 const isSubmitting = ref(false);
 
 // Form data
+const categoryService = useCategoriesService();
 const newCategory = reactive<CreateCategoryDTO>({
   name: "",
   description: "",
@@ -117,7 +117,7 @@ const handleAddCategory = async () => {
 
   isSubmitting.value = true;
   try {
-    await inventoryService.createCategory(newCategory);
+    await categoryService.createCategory(newCategory);
     toast.add({
       title: t("admin.categories.success.categoryAdded"),
       color: "success",

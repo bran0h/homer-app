@@ -155,6 +155,15 @@
             "categories": {
                 "all": "All Categories"
             },
+            "units": {
+                "pieces": "Pieces",
+                "kilogram": "Kilogram",
+                "gram": "Gram", 
+                "liter": "Liter",
+                "mililiter": "Milliliter",
+                "tableSpoon": "Table Spoon",
+                "teaSpoon": "Tea Spoon"
+            },
             "table": {
                 "name": "Name",
                 "quantity": "Quantity",

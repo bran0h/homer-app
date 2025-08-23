@@ -1,19 +1,15 @@
 import type {
-  CreateCategoryDTO,
   CreateItemDTO,
-  CreateTagDTO,
-  UpdateCategoryDTO,
+  InventoryItemStatus,
+  ItemWithRelations,
   UpdateItemDTO,
-  UpdateTagDTO,
 } from "~~/shared/types/fridge";
 
-export const useInventoryService = () => {
+export const useItemsService = () => {
   const client = useSupabaseClient<Database>();
-  const _user = useSupabaseUser();
 
-  // Items
   const getItems = async (filters?: {
-    status?: Database["public"]["Enums"]["item_status"];
+    status?: InventoryItemStatus;
     category?: string;
     tag?: string;
     search?: string;
@@ -45,26 +41,6 @@ export const useInventoryService = () => {
     const { data, error } = await query;
     if (error) throw error;
     return data as ItemWithRelations[];
-  };
-
-  const getCategories = async () => {
-    const { data, error } = await client
-      .from("inventory_categories")
-      .select("*")
-      .order("name");
-
-    if (error) throw error;
-    return data;
-  };
-
-  const getTags = async () => {
-    const { data, error } = await client
-      .from("inventory_tags")
-      .select("*")
-      .order("name");
-
-    if (error) throw error;
-    return data;
   };
 
   const getItem = async (id: string) => {
@@ -116,67 +92,6 @@ export const useInventoryService = () => {
       .from("inventory_items")
       .delete()
       .eq("id", id);
-
-    if (error) throw error;
-  };
-
-  const createCategory = async (category: CreateCategoryDTO) => {
-    const { data, error } = await client
-      .from("inventory_categories")
-      .insert(category)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data;
-  };
-
-  const updateCategory = async (id: string, category: UpdateCategoryDTO) => {
-    const { data, error } = await client
-      .from("inventory_categories")
-      .update(category)
-      .eq("id", id)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data;
-  };
-
-  const deleteCategory = async (id: string) => {
-    const { error } = await client
-      .from("inventory_categories")
-      .delete()
-      .eq("id", id);
-
-    if (error) throw error;
-  };
-
-  const createTag = async (tag: CreateTagDTO) => {
-    const { data, error } = await client
-      .from("inventory_tags")
-      .insert(tag)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data;
-  };
-
-  const updateTag = async (id: string, tag: UpdateTagDTO) => {
-    const { data, error } = await client
-      .from("inventory_tags")
-      .update(tag)
-      .eq("id", id)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data;
-  };
-
-  const deleteTag = async (id: string) => {
-    const { error } = await client.from("inventory_tags").delete().eq("id", id);
 
     if (error) throw error;
   };
@@ -243,32 +158,15 @@ export const useInventoryService = () => {
   };
 
   return {
-    // Items
     getItems,
     getItem,
     createItem,
     updateItem,
     deleteItem,
-
-    // Categories
-    getCategories,
-    createCategory,
-    updateCategory,
-    deleteCategory,
-
-    // Tags
-    getTags,
-    createTag,
-    updateTag,
-    deleteTag,
-
-    // Relationships
     addItemToCategory,
     removeItemFromCategory,
     addTagToItem,
     removeTagFromItem,
-
-    // Bulk operations
     removeAllCategoriesFromItem,
     removeAllTagsFromItem,
   };

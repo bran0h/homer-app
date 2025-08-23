@@ -7,7 +7,11 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck",
+    "sb:migration": "supabase migration new",
+    "sb:migrate": "supabase migration up",
+    "sb:rollback": "supabase migration down"
   },
   "dependencies": {
     "@bhozza/tabula": "^1.0.12",
@@ -29,5 +33,9 @@
     "vue-router": "^4.5.1",
     "zod": "^4.0.10"
   },
-  "packageManager": "pnpm@10.14.0"
+  "packageManager": "pnpm@10.14.0",
+  "devDependencies": {
+    "@iconify-json/lucide": "^1.2.63",
+    "supabase": "^2.33.9"
+  }
 }

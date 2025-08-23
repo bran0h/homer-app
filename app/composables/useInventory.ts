@@ -1,41 +1,40 @@
+import { useCategoriesService } from "~/services/useCategoriesService";
+import { useItemsService } from "~/services/useItemsService";
+import { useTagsService } from "~/services/useTagsService";
 import type {
-  CreateCategoryDTO,
-  CreateItemDTO,
-  CreateTagDTO,
   InventoryItemStatus,
   ItemWithRelations,
-  UpdateCategoryDTO,
-  UpdateItemDTO,
-  UpdateTagDTO,
 } from "~~/shared/types/fridge";
-import { useInventoryService } from "../services/useInventoryService";
 
 export const useInventory = () => {
-  const inventoryService = useInventoryService();
-
   // Items
+  const itemsService = useItemsService();
   const {
     data: items,
     error: itemsError,
     status: itemsStatus,
     refresh: refreshItems,
-  } = useAsyncData("inventory-items", async () => inventoryService.getItems());
+  } = useAsyncData("inventory-items", async () => itemsService.getItems());
 
+  // Categories
+  const categoriesService = useCategoriesService();
   const {
     data: categories,
     error: categoriesError,
     status: categoriesStatus,
     refresh: refreshCategories,
   } = useAsyncData("inventory-categories", async () =>
-    inventoryService.getCategories()
+    categoriesService.getCategories()
   );
 
+  // Tags
+  const tagsService = useTagsService();
   const {
     data: tags,
     error: tagsError,
     status: tagsStatus,
     refresh: refreshTags,
-  } = useAsyncData("inventory-tags", async () => inventoryService.getTags());
+  } = useAsyncData("inventory-tags", async () => tagsService.getTags());
 
   // Computed helpers
   const itemsGroupedByCategory = computed(() => {
@@ -118,90 +117,6 @@ export const useInventory = () => {
     };
   });
 
-  // Actions
-  const createItem = async (item: CreateItemDTO) => {
-    const newItem = await inventoryService.createItem(item);
-    await refreshItems();
-    return newItem;
-  };
-
-  const updateItem = async (id: string, item: UpdateItemDTO) => {
-    const updatedItem = await inventoryService.updateItem(id, item);
-    await refreshItems();
-    return updatedItem;
-  };
-
-  const deleteItem = async (id: string) => {
-    await inventoryService.deleteItem(id);
-    await refreshItems();
-  };
-
-  const createCategory = async (category: CreateCategoryDTO) => {
-    const newCategory = await inventoryService.createCategory(category);
-    await refreshCategories();
-    return newCategory;
-  };
-
-  const updateCategory = async (id: string, category: UpdateCategoryDTO) => {
-    const updatedCategory = await inventoryService.updateCategory(id, category);
-    await refreshCategories();
-    return updatedCategory;
-  };
-
-  const deleteCategory = async (id: string) => {
-    await inventoryService.deleteCategory(id);
-    await refreshCategories();
-  };
-
-  const createTag = async (tag: CreateTagDTO) => {
-    const newTag = await inventoryService.createTag(tag);
-    await refreshTags();
-    return newTag;
-  };
-
-  const updateTag = async (id: string, tag: UpdateTagDTO) => {
-    const updatedTag = await inventoryService.updateTag(id, tag);
-    await refreshTags();
-    return updatedTag;
-  };
-
-  const deleteTag = async (id: string) => {
-    await inventoryService.deleteTag(id);
-    await refreshTags();
-  };
-
-  const filterItems = (filters: {
-    status?: string;
-    category?: string;
-    search?: string;
-  }) => {
-    return (
-      items.value?.filter((item) => {
-        if (
-          filters.status &&
-          filters.status !== "all" &&
-          item.status !== filters.status
-        )
-          return false;
-        if (filters.search) {
-          const searchTerm = filters.search.toLowerCase();
-          const matchesName = item.name.toLowerCase().includes(searchTerm);
-          const matchesDescription = item.description
-            ?.toLowerCase()
-            .includes(searchTerm);
-          if (!matchesName && !matchesDescription) return false;
-        }
-        if (filters.category && filters.category !== "all") {
-          const hasCategory = item.inventory_item_categories?.some(
-            (ic) => ic.inventory_categories.id === filters.category
-          );
-          if (!hasCategory) return false;
-        }
-        return true;
-      }) || []
-    );
-  };
-
   return {
     // Data
     items,
@@ -225,23 +140,9 @@ export const useInventory = () => {
     expiringSoonItems,
     stats,
 
-    // Actions
-    createItem,
-    updateItem,
-    deleteItem,
-    createCategory,
-    updateCategory,
-    deleteCategory,
-    createTag,
-    updateTag,
-    deleteTag,
-
     // Refresh functions
     refreshItems,
     refreshCategories,
     refreshTags,
-
-    // Utilities
-    filterItems,
   };
 };
